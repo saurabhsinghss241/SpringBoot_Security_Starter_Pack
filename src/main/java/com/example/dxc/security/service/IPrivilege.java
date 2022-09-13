@@ -9,7 +9,7 @@ public interface IPrivilege {
     PrivilegeDTO createPrivilege(PrivilegeDTO privilegeDTO) throws Exception;
     Collection<PrivilegeDTO> getAllPrivileges();
     PrivilegeDTO getPrivilegeById(Long privilegeId) throws Exception;
-
     Privilege createPrivilegeIfNotExist(String privilegeName);
+    void deletePrivilege(Long privilegeId) throws Exception;
 
 }

@@ -32,4 +32,10 @@ public class PrivilegeController {
         PrivilegeDTO privilege = this.privilegeService.createPrivilege(privilegeDTO);
         return new ResponseEntity<>(privilege,HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePrivilege(@PathVariable(name = "id") Long privilegeId) throws Exception {
+        this.privilegeService.deletePrivilege(privilegeId);
+        return new ResponseEntity<>(null,HttpStatus.OK);
+    }
 }

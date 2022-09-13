@@ -33,4 +33,10 @@ public class RoleController {
         return new ResponseEntity<>(role,HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRole(@PathVariable(name = "id") Long roleId) throws Exception {
+        this.roleService.deleteRole(roleId);
+        return new ResponseEntity<>(null,HttpStatus.OK);
+    }
+
 }

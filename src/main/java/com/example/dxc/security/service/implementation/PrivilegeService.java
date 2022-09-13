@@ -54,5 +54,13 @@ public class PrivilegeService implements IPrivilege {
         return privilegeInfo.get();
     }
 
+    @Override
+    public void deletePrivilege(Long privilegeId) throws Exception {
+        Optional<Privilege> privilege = this.privilegeRepository.findById(privilegeId);
+        if(privilege.isEmpty())
+            throw new Exception(String.format("Privilege with Id: %s not exist.",privilegeId));
+        this.privilegeRepository.delete(privilege.get());
+    }
+
 
 }
