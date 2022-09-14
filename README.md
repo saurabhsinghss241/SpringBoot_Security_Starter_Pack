@@ -87,8 +87,8 @@ return new MyUserDetails(user);<br /><br />
 **Problem** - We have implemented our custom UserDetailsService now we need to implement our own AuthenticationProvider.<br />
 **Solution** - <br />
 AuthenticationProvider need 2 things.<br />
-UserDetailsService - Aready resolved this by creating MyUserDetailsService<br />
-PasswordEncoder - This is needed because spring boot does't want us to store plain password and it expects that all the passwords store in our db will be encrypted.<br />
+*UserDetailsService* - Aready resolved this by creating MyUserDetailsService<br />
+*PasswordEncoder* - This is needed because spring boot does't want us to store plain password and it expects that all the passwords store in our db will be encrypted.<br />
 Using this passwordencoder spring boot is going to encrypt our cred and match with the password saved in db.<br /><br />
 
 ```sh
@@ -157,13 +157,13 @@ This will also work fine.<br /><br />
 
 ### NOTE
 
-Always save roles in your database with prefix ROLE<br />
+Always save roles in your database with *prefix ROLE*<br />
 example ROLE_ADMIN, ROLE_USER<br /><br />
 
-Save encrypted password in the database.<br />
+Save *encrypted password* in the database.<br />
 Can be done when you recieve a user record from the client.<br />
 As soon as you recieve a new user.<br />
-User the PasswordEncoder and encode the password present in the request.<br />
+User the *PasswordEncoder* and encode the password present in the request.<br />
 Then save this user info in DB.<br />
 ```sh
 userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
