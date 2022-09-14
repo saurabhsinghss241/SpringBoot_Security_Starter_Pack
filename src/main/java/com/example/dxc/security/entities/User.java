@@ -20,7 +20,7 @@ public class User {
     private String email;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),

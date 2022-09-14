@@ -5,6 +5,7 @@ import com.example.dxc.security.service.implementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -14,6 +15,8 @@ import java.util.Collection;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     public ResponseEntity<Collection<UserDTO>> getAllUsers(){
@@ -28,6 +31,7 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user) throws Exception {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserDTO savedUser = this.userService.createUser(user);
         return new ResponseEntity<>(savedUser,HttpStatus.CREATED);
     }
