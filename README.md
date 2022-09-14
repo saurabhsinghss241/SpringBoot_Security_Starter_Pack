@@ -7,7 +7,7 @@ Spring Security is added and all API endpoints are secured using default BasicAu
 
 ```sh
 <dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-security</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
 ```
