@@ -1,6 +1,6 @@
 # SpringBoot_Security_Starter_Pack
 
-## OBJECTIVE - Implement Spring Security to our Spring Boot Project.
+## OBJECTIVE - Implement Spring Security in our Spring Boot Project.
 
 Each stage of this process is captured in different branches.
 
