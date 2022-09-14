@@ -66,12 +66,12 @@ Finds the right provider based on the supports() method on AuthenticationProvide
 - *To authenticate AuthenticationProvider needs userinformation and that is provided by UserDetailsService.*<br />
 - *UserDetailsService returns UserDetails.*<br /><br />
 
-Now we understood that under the hood that actually does the authentication is AuthenticationProvider.<br />
-Now we need spring to do the authentication in the way we want.<br />
-User details should be fetched from our database and then the user should be authenticated.<br />
-We know that AuthenticationProvider needs UserDetailsService to get the user details so we will have to implement that also.<br /><br />
+- Now we understood that under the hood actual authentication is done by AuthenticationProvider.<br />
+- Now we need spring to do the authentication in the way we want.<br />
+- User details should be fetched from our database and then the user should be authenticated.<br />
+- We know that AuthenticationProvider needs UserDetailsService to get the user details so we will have to implement that first.<br /><br />
 
-**Task we need to do.**<br /><br />
+### Task we need to do.
 **Problem** - Implement UserDetailsService so that you can fetch users info from database.<br />
 **Solution**<br />
 Create a class MyUserdetailsService and implement UserDetailsService.<br />
