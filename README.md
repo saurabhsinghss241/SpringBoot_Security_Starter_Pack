@@ -59,8 +59,12 @@ Authentication Filter -- Authentication(Cred) --> AuthenticationManager --> Auth
 **AuthenticationManager** - Cordinates multiple AuthenticationProvider and choose the right provider.<br />
 Finds the right provider based on the supports() method on AuthenticationProvider.<br /><br />
 
-To authenticate AuthenticationProvider needs userinformation and that is done by UserDetailsService.<br />
-UserDetailsService returns UserDetails.<br /><br />
+**UserDetailsService** - Responsible for retrieving user information.<br />
+**Input** - Username<br />
+**Output** - An instance of UserDetails containg all the information related to requested user.<br /><br />
+
+- *To authenticate AuthenticationProvider needs userinformation and that is provided by UserDetailsService.*<br />
+- *UserDetailsService returns UserDetails.*<br /><br />
 
 Now we understood that under the hood that actually does the authentication is AuthenticationProvider.<br />
 Now we need spring to do the authentication in the way we want.<br />
