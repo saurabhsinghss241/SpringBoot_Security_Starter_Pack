@@ -124,8 +124,14 @@ private PasswordEncoder passwordEncoder;
 
 **Problem** - We have implemented UserDetailsService and AuthenticationProvider now we have to tell AuthenticationManager to use which AuthenticationProvider for the incoming request.<br />
 **Solution** -<br />
-We cann't interact with AuthenticationManager directly.<br />
-But Spring Boot Security provides us with AuthenticationManagerBuilder using this we can intract with AuthenticationManager.<br /><br />
+Now we want to configue the AuthenticationManager because we want it to use our AuthenticationProvider to authenticate incoming request.
+But we cann't interact with AuthenticationManager directly.<br />
+So Spring Boot Security provides us with AuthenticationManagerBuilder using this we can configure AuthenticationManager.<br /><br />
+
+**AuthenticationManagerBuilder** - We use AuthenticationManagerBuilder to configure what the AuthenticationManager should do.<br>
+Now we need to do two things.
+- Get hold of AuthenticationManagerBuilder.
+- Set the configuration on it. <br><br>
 
 How to get hold of this AuthenticationManagerBuilder?<br />
 SpringBoot has a class WebSecurityConfigurerAdapter which has configure method that takes AuthenticationManagerBuilder as a parameter.<br />
