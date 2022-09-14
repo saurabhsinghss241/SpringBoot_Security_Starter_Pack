@@ -67,7 +67,7 @@ Now we need spring to do the authentication in the way we want.<br />
 User details should be fetched from our database and then the user should be authenticated.<br />
 We know that AuthenticationProvider needs UserDetailsService to get the user details so we will have to implement that also.<br /><br />
 
-**Task we need to do.**<br />
+**Task we need to do.**<br /><br />
 **Problem** - Implement UserDetailsService so that you can fetch users info from database.<br />
 **Solution**<br />
 Create a class MyUserdetailsService and implement UserDetailsService.<br />
@@ -78,8 +78,7 @@ Provide implementaion for loadUserByUserName() (you can use userrepository or us
 Create a new class MyUserDetails that implements UserDetails.<br />
 define all the methods.<br />
 store your user info in this (private User user initilize using constructor)<br />
-Define getAuthorities (capture roles info from user and populate an arraylist of SimpleGrantedAuthorities and return)<br /><br />
-
+Define getAuthorities (capture roles info from user and populate an arraylist of SimpleGrantedAuthorities and return)<br />
 Now after finding the User with respective username.<br />
 Return an instance of MyUserDetails with User info saved init.<br />
 return new MyUserDetails(user);<br /><br />
@@ -168,6 +167,8 @@ Then save this user info in DB.<br />
 ```sh
 userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 ```
+<br /><br />
+I have taken email as username in loadUserByUsername() method of MyUserDetailsService.
 
 
 
