@@ -13,4 +13,4 @@ On top of this you can add Spring Security and test various features.<br><br>
 - Register and it will provide you a postgre instance.<br>
 - Configure your application.properties file.<br><br>
 
-**Refer BasicAuth and BasicAuthJPA branch for implementation.**
+**Refer BasicAuth, BasicAuthJPA and JWTImplementation branch for Authentication and Authorization implementation using Spring Boot Security.**
