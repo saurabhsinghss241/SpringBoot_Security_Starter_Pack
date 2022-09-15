@@ -177,31 +177,41 @@ Then save this user info in DB.<br />
 ```sh
 userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 ```
-<br /><br />
-I have taken email as username in loadUserByUsername() method of MyUserDetailsService.
+<br />
+I have taken email as username in loadUserByUsername() method of MyUserDetailsService.<br /><br />
 
-### Authentication is done now we have to handle Authorization 😭 
+### Authentication is done now we have to handle Authorization 😭 <br />
 
-We have authenticated user based on username password but we don't want the user to have access for all the endpoints.
-We want only users with ADMIN roles to access roles and privileges endpoints and user endpoint can be accessed by both ADMIN and USER.
+We have authenticated user based on username password but we don't want the user to have access for all the endpoints.<br />
+We want only users with ADMIN roles to access roles and privileges endpoints and user endpoint can be accessed by both ADMIN and USER.<br /><br />
 
-**Theory we need to know**
-Whenever user sends a request it goes through a set of filters before it hit our controller and returns us the data.
-Working of a filter is simple it gets the incoming request does some operation based on content of the request and then passes it to next filter.
-And we will also use these filters and then we can check the URI of incomming request.
-If the URI is pointing to roles and privileges API endpoint we will check if the user requesting has ADMIN role or not.
-If the user has ADMIN role let the req go to the respective controller.
-Else block and send an error.
+**Theory we need to know**<br />
+- Whenever user sends a request it goes through a set of filters before it hit our controller and returns us the data.<br />
+- Working of a filter is simple it gets the incoming request does some operation based on content of the request and then passes it to next filter.<br />
+- And we will also use these filters and then we can check the URI of incomming request.<br />
+- If the URI is pointing to roles and privileges API endpoint we will check if the user requesting has ADMIN role or not.<br />
+- If the user has ADMIN role let the req go to the respective controller.<br />
+- Else block and send an error.<br /><br />
 
-Filters to the rescue.
+*Filters to the rescue.*<br /><br />
 
-Problem 
-How to get hold of this filter so that we place our logic?
-Solution 
-WebSecurityConfigurerAdapter class that we used earlier for authentication contains a configure() method with parameter HttpSecurity.
-This HttpSecurity will help us to setup a Security filter with some conditions and it will evaluate all incorming Http request.
+*Problem* <br />
+How to get hold of this filter so that we place our logic?<br />
+*Solution* <br />
+- WebSecurityConfigurerAdapter class that we used earlier for authentication contains a configure() method with parameter HttpSecurity.<br />
+- This HttpSecurity will help us to setup a Security filter with some conditions and it will evaluate all incorming Http request.<br />
 
 ```sh
-  
+  @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/api/privileges/**").hasRole("ADMIN")
+                .antMatchers("/api/roles/**").hasRole("ADMIN")
+                .antMatchers("/api/users/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/").permitAll()
+                .and().httpBasic();
+    }
 ```
+<br /><br />
+
 
