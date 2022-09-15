@@ -17,21 +17,6 @@ So how can we ensure that the user that is sending the token with the given info
 
 Solution -<br>
 All these token are signed by a Secret Key which only the server knows that is issuing these tokens.<br>
-Suppose someone finds out the data from the token and trie's to send another token with same content <br><br>
-
-What is JWT?<br>
-Json Web Token is a way to authorize requests without managing states or sessions.<br><br>
-
-How we achieve this?<br>
-We achieve this stateless behaviour by providing a token to the user containing all the information.<br>
-User can send this token in subsquent request and based on this token we will authorize the user.<br>
-
-Problem -<br>
-Anyone can view the content of these token 😭 using a base64 decoder.<br>
-So how can we ensure that the user that is sending the token with the given information is the real user.<br>
-
-Solution -<br>
-All these token are signed by a Secret Key which only the server knows that is issuing these tokens.<br>
 Suppose someone finds out the data from the token and trie's to send another token with same content but then he will have to encode the information using a Secret Key which will not with our server key.<br>
 So our server will know that this token is tampered.<br><br>
 
