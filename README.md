@@ -195,9 +195,9 @@ We want only users with ADMIN roles to access roles and privileges endpoints and
 
 *Filters to the rescue.*<br /><br />
 
-*Problem* <br />
+**Problem** <br />
 How to get hold of this filter so that we place our logic?<br />
-*Solution* <br />
+**Solution** <br />
 - WebSecurityConfigurerAdapter class that we used earlier for authentication contains a configure() method with parameter HttpSecurity.<br />
 - This HttpSecurity will help us to setup a Security filter with some conditions and it will evaluate all incorming Http request.<br />
 
