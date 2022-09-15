@@ -71,7 +71,8 @@ Make sure to annotate this method with @Bean because we need this in our token g
 public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
 }
-```<br>
+```
+<br>
 Ok now we have AuthenticationManager now we need an instance Authentication because to authenticate AuthenticationManager needs an instance of Authentication containing user credentials.<br><br>
 
 Authentication is an interface so we have to use an implementation of this.<br>
