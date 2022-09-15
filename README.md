@@ -180,5 +180,28 @@ userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 <br /><br />
 I have taken email as username in loadUserByUsername() method of MyUserDetailsService.
 
+### Authentication is done now we have to handle Authorization 😭 
 
+We have authenticated user based on username password but we don't want the user to have access for all the endpoints.
+We want only users with ADMIN roles to access roles and privileges endpoints and user endpoint can be accessed by both ADMIN and USER.
+
+**Theory we need to know**
+Whenever user sends a request it goes through a set of filters before it hit our controller and returns us the data.
+Working of a filter is simple it gets the incoming request does some operation based on content of the request and then passes it to next filter.
+And we will also use these filters and then we can check the URI of incomming request.
+If the URI is pointing to roles and privileges API endpoint we will check if the user requesting has ADMIN role or not.
+If the user has ADMIN role let the req go to the respective controller.
+Else block and send an error.
+
+Filters to the rescue.
+
+Problem 
+How to get hold of this filter so that we place our logic?
+Solution 
+WebSecurityConfigurerAdapter class that we used earlier for authentication contains a configure() method with parameter HttpSecurity.
+This HttpSecurity will help us to setup a Security filter with some conditions and it will evaluate all incorming Http request.
+
+```sh
+  
+```
 
