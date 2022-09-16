@@ -103,7 +103,8 @@ public PasswordEncoder passwordEncoder(){
 <br /><br />
 Here I am using BCrypt you can use PasswordEncoder of your own choice.<br /><br />
 
-In our case The default SpringBoot AuthenticationProvider will also work.<br />
+In our case The default SpringBoot AuthenticationProvider will also work because internally Spring users DaoAuthenticationProvider as default Implementation for AuthenticationProvider.<br />
+That's why we only provided UserDetailsService in our code.<br/><br/>
 If you want to create your own AuthenticationProvider.<br />
 Steps<br />
 Create an instance of DAOAuthenticationProvider.<br />
