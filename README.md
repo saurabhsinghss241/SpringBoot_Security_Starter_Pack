@@ -198,6 +198,9 @@ http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 UsernamePasswordAuthenticationFilter - is the filter that does the authorization.
 
 
+**NOTE** 
+Tokens are signed using a secret key and you have to define that in application.properties.<br>
+
 
 
 
