@@ -181,6 +181,13 @@ protected void configure(AuthenticationManagerBuilder auth){
 ```
 This will also work fine.<br /><br />
 
+- All setup done now when user will provide us with correct credentials.<br />
+- AuthenticationManager will user DaoAuthenticationProvider and authenticate the user.<br /><br />
+- Once Authentication is successfull Spring will set principal information in Authentication Obj.<br />
+- And save this in SecurityContext.<br />
+- So that we don't have to login again in subsquent request spring will get the authenticated user's info from this SecurityContext.<br />
+- Scope of SecurityContext is tied to your local thread.<br />
+
 ### NOTE
 
 Always save roles in your database with *prefix ROLE*<br />
