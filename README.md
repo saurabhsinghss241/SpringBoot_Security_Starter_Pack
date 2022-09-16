@@ -111,25 +111,93 @@ Authentication Done.<br>
 
 ## Now we have to handle authorization.
 
-But we have already implemented this in BasicJPA flow using HttpSecurity filter and antMatchers.
-But there is an issue.
-To authorize incoming request we are checking the roles of currently logged in user.
-To check the 
+But we have already implemented this in BasicJPA flow using HttpSecurity filter and antMatchers.<br>
+But there is an issue.<br>
+To authorize incoming request we are checking the roles of currently logged in user.<br>
+And this authority(roles or permissions) info is saved in Authentication object stored in SecurityContext.<br>
+In BasicJPA flow after authenticaiton AuthenticationManager saves prinipal info in Authentication Object and saves it into SecurityContext.<br>
+And because of this SecurityContext subsquent request don't need to authenticate because Authentication obj is already present.<br>
 
-To achieve this we have to intercept incomming request and check the claims info of currently logged in user and then we can decide to allow or deny.
+But JWT is stateless means we don't maintain session so as soon as we returned the token info after authentication Authentication Object is cleared from SecurityContext.<br>
+```sh
+.and()
+.sessionManagement()
+.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+```
+When we send next request we again have to authenticate.<br>
+To solve this issue we will check the token validity can populate the SecurityContext with an Authentication object.<br><br>
 
-Problem - How to intercept incoming request?
-Solution - Using Filters, We can create a filter that can check the URI of incomming req and Check the claims of currently autorized user and take decision.
+**WorkFlow**<br>
+- Create a JWTFilter.<br>
+- Extract JWT from incomming request.<br>
+- Validate<br>
+- Create an Authentication obj using the user info from token and UserDetailsService.<br>
+- Save this Authentication obj with principal into SecurityContext.<br>
 
-Problem - But JWT is stateless so logged in users info will not persist in the session so how we can check the claims?
-Solution - We can extract the JWT from the incomming request, Check token validity and then extract user info and then we can save this information into SecurityContext so that we can check for user claims.
+## Step 1 - Create a filter to intercept JWT in incomming request.
 
-WorkFlow
-Create a JWTFilter.
-Extract JWT from incomming request.
-Validate
-Create an Authentication obj using the user info from token and UserDetailsService.
-Save this Authentication obj with principal into SecurityContext.
+- We will create JWTFilter class that extends OncePerRequestFilter class and override doFilterInternal() method.<br>
+- Now inside doFilterInternal() check for a token in authorization header and extract it.<br>
+```sh
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = null;
+        String username = null;
+        if(authorizationHeader!=null && authorizationHeader.startsWith("Bearer ")){
+            token = authorizationHeader.substring(7);
+            username = jwtUtility.getUsernameFromToken(token);
+        }
+
+```
+- Check if token is valid or not using JWTUtility validateToken() method.<br>
+- But this validateToken method needs token and UserDetails as paramter.<br>
+- Get the UserDetails using username extracted from token and UserDetailsService.<br>
+- Validate.<br>
+- If successful.<br>
+- Now we have to save an object of Authentication with principal information.<br>
+(In BasicAuth flow this was done by Spring internally after user is successfully authenticated.)<br>
+- In our case we know that user is authenticated based on token validity so don't need to authenticate again.<br>
+- We will directly set Authentication Obj with Princaipal in SecurityContext.<br>
+
+- Authentication is an interface so we will need an implementation to create an object.<br>
+- We will use UsernamePasswordAuthenticationToken class this is the default implementation of Authentication interface.<br>
+- UsernamePasswordAuthenticationToken has 3 Parameters principal, credentials and authorities.<br>
+- Prinipal = UserDetails<br>
+- Credentials = null because we have already authenticated the user so we don't need the credentials.<br>
+- Authorities = this we can get from UserDetails getAuthorities() method.<br>
+- Authentication object created.<br>
+```sh
+  UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+          new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+
+  // Storing additional information related to this request.
+  // Like ip,session-info etc. which we can refer in future based on our needs.
+  // Without this also everything will work fine.
+  usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+```
+Now save this in SecurityContext this can be done using SecurityContextHolder.<br>
+```sh
+SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+```
+Get current Context and set Authentication Object.<br><br>
+
+Our Custom Filter job is done now we want this request to continue in the filterchain so that HttpSecurity filter intercept this and authorize the request based on authority of currently authenticated user (which will be fetched from SecurityContext).<br>
+To send this request down the filterchain.<br>
+```sh
+filterChain.doFilter(request,response);
+```
+
+Almost Done.<br><br>
+
+Only 1 issue remains we have to make sure our custom filter intercept the request before the UsernamePasswordAuthenticationFilter in HttpSecurity so that we can set the SecurityContext and then UsernamePasswordAuthenticationFilter authorize our request.<br>
+
+To solve this issue go to HttpSecurity
+```sh
+http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+```
+UsernamePasswordAuthenticationFilter - is the filter that does the authorization.
+
+
 
 
 
