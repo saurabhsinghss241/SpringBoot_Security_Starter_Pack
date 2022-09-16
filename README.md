@@ -116,9 +116,9 @@ public DAOAuthenticationProvider daoAuthenticationProvider(){
   authProvider.setPasswordEncoder(passwordEncoder);
 }
 ```
-<br/><br/>
-OR
-You can pass only the UserDetailsService to AuthenticationManagerBuilder.
+<br/>
+OR<br/>
+You can pass only the UserDetailsService to AuthenticationManagerBuilder.<br/>
 This will also work because internally Spring users DaoAuthenticationProvider as default Implementation for AuthenticationProvider.<br />
 That's why we only provided UserDetailsService in our code.
 ```sh
