@@ -109,6 +109,28 @@ We will get this token send this back to user.<br>
 
 Authentication Done.<br>
 
+## Now we have to handle authorization.
+
+But we have already implemented this in BasicJPA flow using HttpSecurity filter and antMatchers.
+But there is an issue.
+To authorize incoming request we are checking the roles of currently logged in user.
+To check the 
+
+To achieve this we have to intercept incomming request and check the claims info of currently logged in user and then we can decide to allow or deny.
+
+Problem - How to intercept incoming request?
+Solution - Using Filters, We can create a filter that can check the URI of incomming req and Check the claims of currently autorized user and take decision.
+
+Problem - But JWT is stateless so logged in users info will not persist in the session so how we can check the claims?
+Solution - We can extract the JWT from the incomming request, Check token validity and then extract user info and then we can save this information into SecurityContext so that we can check for user claims.
+
+WorkFlow
+Create a JWTFilter.
+Extract JWT from incomming request.
+Validate
+Create an Authentication obj using the user info from token and UserDetailsService.
+Save this Authentication obj with principal into SecurityContext.
+
 
 
 
