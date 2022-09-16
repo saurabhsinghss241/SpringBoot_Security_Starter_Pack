@@ -103,10 +103,10 @@ public PasswordEncoder passwordEncoder(){
 <br /><br />
 Here I am using BCrypt you can use PasswordEncoder of your own choice.<br /><br />
 
-To create your own AuthenticationProvider.<br />
+**Create your own AuthenticationProvider.**<br />
 Steps<br />
 Create an instance of DAOAuthenticationProvider. (Implementation of AuthenticationProvider interface)<br />
-Provide an UserDetailsService and PasswordEncoder<br /><br />
+Provide an UserDetailsService and PasswordEncoder<br />
 
 ```sh
 @Bean
@@ -116,19 +116,24 @@ public DAOAuthenticationProvider daoAuthenticationProvider(){
   authProvider.setPasswordEncoder(passwordEncoder);
 }
 ```
-<br/>
-OR<br/>
+We have the AuthenticationProvider.<br />
+Now we have to tell AuthenticationManager to use our AuthenticationProvider and we will do this using AuthenticationManagerBuilder authenticationProvider.
+```sh
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
+```
 You can pass only the UserDetailsService to AuthenticationManagerBuilder.<br/>
 This will also work because internally Spring users DaoAuthenticationProvider as default Implementation for AuthenticationProvider.<br />
 That's why we only provided UserDetailsService in our code.
+
 ```sh
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 ```
-
-<br /><br />
 
 Don't forget to add.<br />
 ```sh
